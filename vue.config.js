@@ -8,8 +8,8 @@ module.exports = {
 
         proxy: {
             '/api': {
-                target: 'https://127.0.0.1:8000', //API服务器的地址
-                secure: false,
+                target: 'http://127.0.0.1:8000', //API服务器的地址
+                secure: true,
                 ws: true, //代理websockets
                 changeOrigin: true,
                 pathRewrite: {
