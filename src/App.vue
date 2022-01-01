@@ -3,7 +3,9 @@
     <v-layout style="overflow: hidden">
       <v-app-bar absolute color="deep-purple">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title class="text-white">Certification Center</v-toolbar-title>
+        <v-toolbar-title class="text-white"
+          >Certification Center</v-toolbar-title
+        >
       </v-app-bar>
       <v-navigation-drawer v-model="drawer" absolute temporary>
         <v-list nav dense>
@@ -14,26 +16,26 @@
             <v-list-item
               prepend-icon="mdi-home"
               title="Home"
-              href="/"
+              to="/"
             ></v-list-item>
             <v-list-item
               v-if="login"
               prepend-icon="mdi-account"
               title="Account"
-              href="/account/setting"
+              to="/account/setting"
             ></v-list-item>
             <v-list-item
               v-if="!login"
               prepend-icon="mdi-account"
-              title="Login"
-              href="/account/login"
+              title="Login/Register"
+              to="/account/login"
             ></v-list-item>
             <v-list-item
-              v-if="!login"
-              prepend-icon="mdi-account"
-              title="Register"
-              href="/account/register"
-            ></v-list-item>
+              prepend-icon="mdi-badge"
+              title="Certification List"
+              to="/certification/list"
+            >
+           </v-list-item>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
@@ -52,7 +54,12 @@
       >
         <v-card-text>
           <v-btn class="mx-4" icon="mdi-home" variant="plain" href="/"></v-btn>
-          <v-btn class="mx-4" icon="mdi-email" variant="plain" mailto="cxz123499@gmail.com"></v-btn>
+          <v-btn
+            class="mx-4"
+            icon="mdi-email"
+            variant="plain"
+            mailto="cxz123499@gmail.com"
+          ></v-btn>
           <v-btn class="mx-4" icon="mdi-calendar" variant="plain"></v-btn>
         </v-card-text>
 
@@ -78,11 +85,11 @@ export default {
 };
 </script>
 <style scoped>
-.v-footer{
+.v-footer {
   margin: 0;
   padding: 0;
 }
-v-toolbar-title{
+v-toolbar-title {
   margin: 20px;
 }
 </style>

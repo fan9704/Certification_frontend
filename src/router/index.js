@@ -3,7 +3,7 @@ import Login from "../components/Login.vue";
 import Index from "../components/Index.vue"
 import Certilist from "../views/Certilist.vue"
 const routes = [{
-        path: "/certification/list",
+        path: "/",
         name: "index",
         component: Index,
     },
@@ -13,7 +13,7 @@ const routes = [{
         component: Login,
     },
     {
-        path: "/",
+        path: "/certification/list",
         name: "Certilist",
         component: Certilist,
     },
