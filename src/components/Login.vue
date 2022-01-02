@@ -1,124 +1,143 @@
 <template>
-  <v-form
-    v-model="valid"
-    ref="form"
-    lazy-validation
-  >
-  <transition name="slide">
-    <v-container v-show="isShow">
-      <h2 class="h2">Login Account</h2>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="usernaame"
-            :rules="nameRules"
-            :counter="30"
-            label="Username"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            :counter="30"
-            label="Password"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[(v) => !!v || 'You must agree to continue!']"
-        label="Remeber Me?"
-        required
-      ></v-checkbox>
+  <v-form v-model="valid" ref="form" lazy-validation>
+    <transition name="slide">
+      <v-container v-show="isShow">
+        <h2 class="h2">Login Account</h2>
+        <v-alert shaped prominent type="error" v-show="error">
+          Username or Password mustn,t be empty
+        </v-alert>
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-text-field
+              v-model="username"
+              :rules="nameRules"
+              :counter="30"
+              label="Username"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-text-field
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              v-model="password"
+              :rules="passwordRules"
+              :counter="30"
+              label="Password"
+              required
+              hint="At least 8 characters"
+              :type="show1 ? 'text' : 'password'"
+              @click:append="show1 = !show1"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-checkbox
+          v-model="checkbox"
+          :rules="[(v) => !!v || 'You must agree to continue!']"
+          label="Remeber Me?"
+          required
+        ></v-checkbox>
 
-      <v-btn color="warning" class="mr-4" v-on:click="slidetoggle"> Haven,t account?Register </v-btn>
+        <v-btn color="warning" class="mr-4" v-on:click="slidetoggle">
+          Haven,t account?Register
+        </v-btn>
 
-      <v-btn color="error" class="mr-4" @click="reset"> Reset</v-btn>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">
-        Login
-      </v-btn>
-    </v-container>
-     </transition>
- 
+        <v-btn color="error" class="mr-4" @click="reset"> Reset</v-btn>
+        <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">
+          Login
+        </v-btn>
+      </v-container>
+    </transition>
 
-  <!-- Register -->
-<transition name="slide">
-    <v-container v-show="!isShow">
-      <h2 class="h2">Register Account</h2>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="username"
-            :rules="nameRules"
-            :counter="30"
-            label="Username"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            :counter="30"
-            label="Password"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="first_name"
-            :rules="nameRules"
-            :counter="30"
-            label="first name"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="last_name"
-            :rules="nameRules"
-            :counter="30"
-            label="last name"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="email"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[(v) => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
-        required
-      ></v-checkbox>
+    <!-- Register -->
+    <transition name="slide">
+      <v-container v-show="!isShow">
+        <h2 class="h2">Register Account</h2>
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-text-field
+              v-model="username"
+              :rules="nameRules"
+              :counter="30"
+              label="Username"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-text-field
+              v-model="password"
+              :rules="passwordRules"
+              :counter="30"
+              label="Password"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-text-field
+              v-model="first_name"
+              :rules="nameRules"
+              :counter="30"
+              label="first name"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-text-field
+              v-model="last_name"
+              :rules="nameRules"
+              :counter="30"
+              label="last name"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="email"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-checkbox
+          v-model="checkbox"
+          :rules="[(v) => !!v || 'You must agree to continue!']"
+          label="Do you agree?"
+          required
+        ></v-checkbox>
 
-      <v-btn color="warning" class="mr-4" v-on:click="slidetoggle">Go to Login</v-btn>
+        <v-btn color="warning" class="mr-4" v-on:click="slidetoggle"
+          >Go to Login</v-btn
+        >
 
-      <v-btn color="error" class="mr-4" @click="reset"> Reset</v-btn>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="register">
-        Register
-      </v-btn>
-    </v-container>
-     </transition>
+        <v-btn color="error" class="mr-4" @click="reset"> Reset</v-btn>
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="register"
+        >
+          Register
+        </v-btn>
+               <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="increment"
+        >
+          Vue-X increment
+        </v-btn>
+      </v-container>
+    </transition>
   </v-form>
 </template>
 
@@ -126,6 +145,7 @@
 export default {
   name: "Login",
   data: () => ({
+    error: false,
     isShow: true,
     valid: true,
     username: "",
@@ -153,21 +173,28 @@ export default {
       this.isShow = !this.isShow;
     },
     login() {
-      let config = {
-        username: this.username,
-        password: this.password,
-      };
-      let url = "/api/accounts/login/";
-      this.axios
-        .post(url, config)
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.login == true) {
-            alert("Login Success");
-            // window.location.href="/";
-          }
-        })
-        .catch((error) => console.log(error));
+      if (this.username == "" || this.password == "") {
+        this.error = true;
+      } else {
+        let config = {
+          username: this.username,
+          password: this.password,
+        };
+        let url = "/api/accounts/login/";
+        this.axios
+          .post(url, config)
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.login == true) {
+              this.$store.commit("login");
+              alert(response.data.User + " Login Success");
+              window.location.href = "/";
+            } else {
+              alert(response.data.error);
+            }
+          })
+          .catch((error) => console.log(error));
+      }
     },
     register() {
       let config = {
@@ -185,10 +212,17 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    increment() {
+      this.$store.commit("increment");
+      console.log(this.$store.state.count);
+    },
   },
 };
 </script>
 <style scoped>
+.v-alert {
+  width: 70%;
+}
 h2.h2 {
   margin-bottom: 15px;
 }
@@ -199,11 +233,11 @@ h2.h2 {
     position: relative;
   }
 }
-.v-form{
+.v-form {
   position: relative;
   height: 90vh;
 }
-.v-container{
+.v-container {
   position: absolute;
 }
 .slide-leave-active,

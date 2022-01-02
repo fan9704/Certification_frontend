@@ -7,7 +7,6 @@
           <v-hover v-slot="{ hover, props }" open-delay="300">
             <v-card>
               <v-img
-                :elevation="hover ? 8 : 2"
                 :class="{ 'on-hover': hover }"
                 src="../assets/MTA.png"
                 height="375"
@@ -40,7 +39,6 @@
           <v-hover v-slot="{ hover, props }" open-delay="300">
             <v-card>
               <v-img
-                :elevation="hover ? 8 : 2"
                 :class="{ 'on-hover': hover }"
                 src="../assets/CCNA.png"
                 height="375"
@@ -73,7 +71,6 @@
           <v-hover v-slot="{ hover, props }" open-delay="300">
             <v-card>
               <v-img
-                :elevation="hover ? 8 : 2"
                 :class="{ 'on-hover': hover }"
                 src="../assets/TOEIC.jpg"
                 height="375"
@@ -106,7 +103,6 @@
           <v-hover v-slot="{ hover, props }" open-delay="300">
             <v-card>
               <v-img
-                :elevation="hover ? 8 : 2"
                 :class="{ 'on-hover': hover }"
                 src="../assets/TQC.png"
                 height="375"
@@ -141,6 +137,12 @@
 
 <script>
 export default {
+  date(){
+    return{
+      hover4:"",
+      props4:""
+    }
+  },
   name: "Index",
 };
 </script>

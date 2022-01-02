@@ -19,30 +19,64 @@
               to="/"
             ></v-list-item>
             <v-list-item
-              v-if="login"
+              v-if="logincheck"
               prepend-icon="mdi-account"
-              title="Account"
+              title="Account setting"
               to="/account/setting"
             ></v-list-item>
             <v-list-item
-              v-if="!login"
+              v-if="!logincheck"
               prepend-icon="mdi-account"
               title="Login/Register"
               to="/account/login"
             ></v-list-item>
             <v-list-item
-              prepend-icon="mdi-badge"
+              prepend-icon="mdi-badge-account-horizontal-outline"
               title="Certification List"
               to="/certification/list"
             >
-           </v-list-item>
+            </v-list-item>
+            <v-list-item
+              v-if="logincheck"
+              prepend-icon="mdi-logout"
+              title="Logout"
+              v-on:click="logoutform = !logoutform"
+            ></v-list-item>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
       <v-main>
-        <v-container fluid>
-          <router-view></router-view>
-        </v-container>
+        <v-overlay
+          v-model="logoutform"
+          contained
+          class="
+            d-flex
+            align-center
+            justify-center justify-space-around
+            flex-column flex-sm-row
+            fill-height
+          "
+        >
+          <v-btn
+            class="form-btn"
+            color="error"
+            size="x-large"
+            prepend-icon="mdi-cancel"
+            @click="logoutform = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            class="form-btn"
+            color="success"
+            size="x-large"
+            prepend-icon="mdi-logout"
+            @click="logout"
+          >
+            Logout
+          </v-btn>
+        </v-overlay>
+        <v-container fluid> <router-view></router-view></v-container>
       </v-main>
     </v-layout>
     <v-footer app>
@@ -78,10 +112,55 @@ export default {
   name: "App",
 
   data: () => ({
+    username: "",
     drawer: false,
     group: null,
-    login: false,
+    logoutform: false,
   }),
+  methods: {
+    getCookie(cname) {
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(";");
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
+    logout() {
+      this.axios
+        .get("/api/accounts/login")
+        .then((response) => {
+          console.log(response);
+          this.$store.commit("logout");
+          alert("Logout Success");
+          window.location.href="/"
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+  computed: {
+    logincheck() {
+      console.log(this.$store.state.login)
+      return this.$store.state.login;
+    },
+  },
+  mounted() {
+    // this.username = this.getCookie("User");
+    // if (this.username == undefined || this.username == "") {
+    //   this.login = false;
+    // } else {
+    //   this.login = true;
+    // }
+  },
 };
 </script>
 <style scoped>
@@ -90,6 +169,15 @@ export default {
   padding: 0;
 }
 v-toolbar-title {
+  margin: 20px;
+}
+.logoutform {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: #aaa;
+}
+.form-btn {
   margin: 20px;
 }
 </style>
