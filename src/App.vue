@@ -42,6 +42,12 @@
               title="Logout"
               v-on:click="logoutform = !logoutform"
             ></v-list-item>
+              <v-list-item
+
+              prepend-icon="mdi-refresh"
+              title="Refresh"
+              v-on:click="refresh"
+            ></v-list-item>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
@@ -146,9 +152,22 @@ export default {
           console.log(error);
         });
     },
+    refresh(){//TODO: Refresh
+      this.axios
+        .get("/api/accounts/login")
+        .then((response) => {
+          console.log(response.data);
+          //if(response.data)
+         // this.$store.commit("login");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
   computed: {
     logincheck() {
+      //this.$store.commit("login");
       console.log(this.$store.state.login)
       return this.$store.state.login;
     },

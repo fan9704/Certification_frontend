@@ -128,14 +128,7 @@
         >
           Register
         </v-btn>
-               <v-btn
-          :disabled="!valid"
-          color="success"
-          class="mr-4"
-          @click="increment"
-        >
-          Vue-X increment
-        </v-btn>
+         
       </v-container>
     </transition>
   </v-form>
@@ -211,10 +204,6 @@ export default {
           console.log(response.data);
         })
         .catch((error) => console.log(error));
-    },
-    increment() {
-      this.$store.commit("increment");
-      console.log(this.$store.state.count);
     },
   },
 };

@@ -57,7 +57,6 @@ export default {
       this.axios
         .get(url)
         .then((res) => {
-          console.log(res);
           this.certs = res.data.slice(
             (this.page - 1) * this.select_option,
             this.page * this.select_option
