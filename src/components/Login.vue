@@ -180,8 +180,8 @@ export default {
             console.log(response.data);
             if (response.data.login == true) {
               this.$store.commit("login");
-              alert(response.data.User + " Login Success");
-              window.location.href = "/";
+              alert(this.$store.state.login);
+              this.$router.push({name: "index"})
             } else {
               alert(response.data.error);
             }

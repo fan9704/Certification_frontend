@@ -137,11 +137,11 @@
 
 <script>
 export default {
-  date(){
-    return{
-      hover4:"",
-      props4:""
-    }
+  date() {
+    return {
+      hover4: "",
+      props4: "",
+    };
   },
   name: "Index",
 };
