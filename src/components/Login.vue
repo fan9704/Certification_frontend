@@ -3,9 +3,11 @@
     <transition name="slide">
       <v-container v-show="isShow">
         <h2 class="h2">Login Account</h2>
-        <v-alert shaped prominent type="error" v-show="error">
-          Username or Password mustn,t be empty
-        </v-alert>
+        <transition name="fade">
+          <v-alert shaped prominent type="error" v-show="error">
+            {{ error_msg }}
+          </v-alert>
+        </transition>
         <v-row>
           <v-col cols="12" md="8">
             <v-text-field
@@ -128,7 +130,6 @@
         >
           Register
         </v-btn>
-         
       </v-container>
     </transition>
   </v-form>
@@ -139,6 +140,7 @@ export default {
   name: "Login",
   data: () => ({
     error: false,
+    error_msg: "",
     isShow: true,
     valid: true,
     username: "",
@@ -168,6 +170,8 @@ export default {
     login() {
       if (this.username == "" || this.password == "") {
         this.error = true;
+        this.error_msg = "Username or Password mustn,t be empty";
+        setInterval(()=>this.error=false,2000)//same as CSS
       } else {
         let config = {
           username: this.username,
@@ -180,10 +184,11 @@ export default {
             console.log(response.data);
             if (response.data.login == true) {
               this.$store.commit("login");
-              alert(this.$store.state.login);
-              this.$router.push({name: "index"})
+              this.$router.push({ name: "index" });
             } else {
-              alert(response.data.error);
+              this.error = true;
+              this.error_msg = "Login Failed Username Or Password Error";
+              setInterval(()=>this.error=false,2000)//same as CSS
             }
           })
           .catch((error) => console.log(error));
@@ -248,6 +253,24 @@ h2.h2 {
 }
 .slide-leave-to {
   transform: translateY(100%);
+  opacity: 0;
+}
+
+.fade-leave-active,
+.fade-enter-active {
+  transition: all 2s ease;
+  transform: opacity;
+}
+.fade-enter-from {
+  opacity: 0;
+}
+.fade-enter-to {
+  opacity: 1;
+}
+.fade-leave-from {
+  opacity: 1;
+}
+.fade-leave-to {
   opacity: 0;
 }
 </style>
