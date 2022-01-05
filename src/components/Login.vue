@@ -4,6 +4,35 @@
       <v-container v-show="isShow">
         <h2 class="h2">Login Account</h2>
         <transition name="fade">
+          <v-dialog v-model="show_form" >
+            <v-card >
+              <v-card-title>
+                <span class="text-h4">Forget Password</span>
+              </v-card-title>
+              <v-alert shaped prominent type="error" v-show="error">
+ {{ error_msg }}
+              </v-alert>
+              <v-card-text >
+                <v-text-field
+                  v-model="email"
+                  :rules="emailRules"
+                  label="email"
+                  required
+                ></v-text-field>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-btn color="primary" width="49%" @click="show_form = !show_form"
+                  >Close</v-btn
+                >
+                <v-btn color="primary" width="49%" @click="send_email"
+                  >Send Email</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </transition>
+        <transition name="fade">
           <v-alert shaped prominent type="error" v-show="error">
             {{ error_msg }}
           </v-alert>
@@ -46,7 +75,16 @@
         </v-btn>
 
         <v-btn color="error" class="mr-4" @click="reset"> Reset</v-btn>
-        <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">
+        <v-btn color="primary" class="mr-4" @click="show_form = !show_form">
+          Forget Password
+        </v-btn>
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          prepend-icon="mdi-login"
+          @click="login"
+        >
           Login
         </v-btn>
       </v-container>
@@ -158,7 +196,8 @@ export default {
       (v) => !!v || "Password is required",
       (v) => v.length <= 30 || "Password must be less than 30 characters",
     ],
-    checkbox: false, //Agree or not
+    checkbox: false, //Agree or not,
+    show_form: false,
   }),
   methods: {
     reset() {
@@ -171,7 +210,7 @@ export default {
       if (this.username == "" || this.password == "") {
         this.error = true;
         this.error_msg = "Username or Password mustn,t be empty";
-        setInterval(()=>this.error=false,2000)//same as CSS
+        setInterval(() => (this.error = false), 2000); //same as CSS
       } else {
         let config = {
           username: this.username,
@@ -184,11 +223,11 @@ export default {
             console.log(response.data);
             if (response.data.login == true) {
               this.$store.commit("login");
-              this.$router.push({ name: "index" });
+              this.$router.push({ name: "index" }); //TODO: Remeber Me checkbox
             } else {
               this.error = true;
               this.error_msg = "Login Failed Username Or Password Error";
-              setInterval(()=>this.error=false,2000)//same as CSS
+              setInterval(() => (this.error = false), 2000); //same as CSS
             }
           })
           .catch((error) => console.log(error));
@@ -210,6 +249,18 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    send_email(){
+      let config = {
+        email: this.email,
+      };
+      let url = "/api/accounts/forget/";
+      this.axios
+        .post(url, config)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => console.log(error));
+    }
   },
 };
 </script>

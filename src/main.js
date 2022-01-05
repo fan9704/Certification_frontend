@@ -5,9 +5,22 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
+import auth from './module/auth.js'
 loadFonts();
 const store = createStore({
+    modules: {
+        auth
+    },
+    plugins: [createPersistedState({
+        storage: window.localStorage,
+        reducer(val) {
+            return {
+                auth: val.auth
+            }
+        }
+    })],
     state() {
         return {
             count: 0,
