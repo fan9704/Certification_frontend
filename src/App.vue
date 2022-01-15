@@ -25,10 +25,10 @@
               to="/account/setting"
             ></v-list-item>
             <v-list-item
-              v-if="!logincheck"
-              prepend-icon="mdi-account"
-              title="Login/Register"
-              to="/account/login"
+              v-if="logincheck"
+              prepend-icon="mdi-chat"
+              title="Chatroom!"
+              to="/chat"
             ></v-list-item>
             <v-list-item
               prepend-icon="mdi-badge-account-horizontal-outline"
@@ -37,13 +37,18 @@
             >
             </v-list-item>
             <v-list-item
+              v-if="!logincheck"
+              prepend-icon="mdi-account"
+              title="Login/Register"
+              to="/account/login"
+            ></v-list-item>
+            <v-list-item
               v-if="logincheck"
               prepend-icon="mdi-logout"
               title="Logout"
               v-on:click="logoutform = !logoutform"
             ></v-list-item>
-              <v-list-item
-
+            <v-list-item
               prepend-icon="mdi-refresh"
               title="Refresh"
               v-on:click="refresh"
@@ -146,39 +151,47 @@ export default {
           console.log(response);
           this.$store.commit("logout");
           alert("Logout Success");
-          window.location.href="/"
+          window.location.href = "/";
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    refresh(){//TODO: Refresh
+    refresh() {
+      let sessionid = this.getCookie("sessionid");
+      console.log(sessionid);
       this.axios
-        .get("/api/accounts/login")
-        .then((response) => {
-          console.log(response.data);
-          //if(response.data)
-         // this.$store.commit("login");
+        .post("/api/accounts/login/")
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.User != null && res.data.User != undefined) {
+            this.username = res.data.User;
+            this.$store.commit("login");
+          }
         })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+        .catch((err) => console.log(err));
+    },
   },
   computed: {
     logincheck() {
-      //this.$store.commit("login");
-      console.log(this.$store.state.login)
+      console.log(this.$store.state.login);
       return this.$store.state.login;
     },
   },
   mounted() {
-    // this.username = this.getCookie("User");
-    // if (this.username == undefined || this.username == "") {
-    //   this.login = false;
-    // } else {
-    //   this.login = true;
-    // }
+    let sessionid = this.getCookie("sessionid");
+    console.log(sessionid);
+    this.axios
+      .post("/api/accounts/login/")
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.User != null && res.data.User != undefined) {
+          this.username = res.data.User;
+          this.$store.state.user=res.data.User;
+          this.$store.commit("login");
+        }
+      })
+      .catch((err) => console.log(err));
   },
 };
 </script>

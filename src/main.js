@@ -24,7 +24,8 @@ const store = createStore({
     state() {
         return {
             count: 0,
-            login: false
+            login: false,
+            user: '',
         }
     },
     mutations: {

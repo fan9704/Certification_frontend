@@ -3,6 +3,7 @@ import Login from "../components/Login.vue";
 import Index from "../components/Index.vue"
 import Certilist from "../views/Certilist.vue"
 import Settings from "../components/Settings.vue"
+import ChatroomView from "../views/ChatRoom.vue"
 const routes = [{
         path: "/",
         name: "index",
@@ -22,6 +23,11 @@ const routes = [{
         path: "/account/setting",
         name: "Settings",
         component: Settings,
+    },
+    {
+        path: "/chat",
+        name: "ChatroomView",
+        component: ChatroomView,
     },
 ];
 

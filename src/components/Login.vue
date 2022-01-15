@@ -4,15 +4,15 @@
       <v-container v-show="isShow">
         <h2 class="h2">Login Account</h2>
         <transition name="fade">
-          <v-dialog v-model="show_form" >
-            <v-card >
+          <v-dialog v-model="show_form">
+            <v-card>
               <v-card-title>
                 <span class="text-h4">Forget Password</span>
               </v-card-title>
-              <v-alert shaped prominent type="error" v-show="error">
- {{ error_msg }}
+              <v-alert shaped prominent type="error" v-show="error_email">
+                {{ error_email_msg }}
               </v-alert>
-              <v-card-text >
+              <v-card-text>
                 <v-text-field
                   v-model="email"
                   :rules="emailRules"
@@ -22,7 +22,10 @@
               </v-card-text>
 
               <v-card-actions>
-                <v-btn color="primary" width="49%" @click="show_form = !show_form"
+                <v-btn
+                  color="primary"
+                  width="49%"
+                  @click="show_form = !show_form"
                   >Close</v-btn
                 >
                 <v-btn color="primary" width="49%" @click="send_email"
@@ -64,7 +67,7 @@
           </v-col>
         </v-row>
         <v-checkbox
-          v-model="checkbox"
+          v-model="save"
           :rules="[(v) => !!v || 'You must agree to continue!']"
           label="Remeber Me?"
           required
@@ -196,8 +199,10 @@ export default {
       (v) => !!v || "Password is required",
       (v) => v.length <= 30 || "Password must be less than 30 characters",
     ],
-    checkbox: false, //Agree or not,
+    save: false, //Agree or not,
     show_form: false,
+    error_email: false,
+    error_email_msg: "",
   }),
   methods: {
     reset() {
@@ -215,6 +220,7 @@ export default {
         let config = {
           username: this.username,
           password: this.password,
+          save:this.save
         };
         let url = "/api/accounts/login/";
         this.axios
@@ -223,7 +229,8 @@ export default {
             console.log(response.data);
             if (response.data.login == true) {
               this.$store.commit("login");
-              this.$router.push({ name: "index" }); //TODO: Remeber Me checkbox
+              this.$store.state.user=this.username;
+              this.$router.push({ name: "index" }); 
             } else {
               this.error = true;
               this.error_msg = "Login Failed Username Or Password Error";
@@ -249,7 +256,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    send_email(){
+    send_email() {
       let config = {
         email: this.email,
       };
@@ -258,9 +265,15 @@ export default {
         .post(url, config)
         .then((response) => {
           console.log(response.data);
+          if (response.data.send) {
+            this.error_email = false;
+          } else {
+            this.error_email = true;
+            this.error_email_msg = "Have Send To Your Email or unvaild Email";
+          }
         })
         .catch((error) => console.log(error));
-    }
+    },
   },
 };
 </script>
