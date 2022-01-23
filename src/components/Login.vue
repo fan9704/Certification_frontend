@@ -3,9 +3,10 @@
     <transition name="slide">
       <v-container v-show="isShow">
         <h2 class="h2">Login Account</h2>
-        <transition name="fade">
-          <v-dialog v-model="show_form">
-            <v-card>
+     
+          <v-dialog scrollable v-model="show_form">
+               <transition name="slide">
+            <v-card class="forget_card forget_card1" v-show="card_change">
               <v-card-title>
                 <span class="text-h4">Forget Password</span>
               </v-card-title>
@@ -32,11 +33,50 @@
                   >Send Email</v-btn
                 >
               </v-card-actions>
-            </v-card>
+              <v-btn
+                color="primary"
+                @click="card_change = !card_change"
+                icon="mdi-arrow-down-box"
+              ></v-btn>
+            </v-card> </transition>
+               <transition name="slide">
+            <v-card class="forget_card forget_card2" v-show="!card_change">
+              <v-card-title>
+                <span class="text-h4">Enter Authorize Code</span>
+              </v-card-title>
+              <v-alert shaped prominent type="error" v-show="error_code">
+            Authorize Code Error
+              </v-alert>
+              <v-card-text>
+                <v-text-field
+                  v-model="captcha"
+                  label="Authorize Code"
+                  required
+                ></v-text-field>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-btn
+                  color="primary"
+                  width="49%"
+                  @click="show_form = !show_form"
+                  >Close</v-btn
+                >
+                <v-btn color="primary" width="49%" @click="Authorize"
+                  >Authorize</v-btn
+                >
+              </v-card-actions>
+              <v-btn
+                color="primary"
+                @click="card_change = !card_change"
+                icon="mdi-arrow-up-box"
+              >
+              </v-btn>
+            </v-card> </transition>
           </v-dialog>
-        </transition>
+       
         <transition name="fade">
-          <v-alert shaped prominent type="error" v-show="error">
+          <v-alert shaped prominent type="error" class="error" v-show="error">
             {{ error_msg }}
           </v-alert>
         </transition>
@@ -203,6 +243,9 @@ export default {
     show_form: false,
     error_email: false,
     error_email_msg: "",
+    card_change: true,
+    captcha:'',
+    error_code:false,
   }),
   methods: {
     reset() {
@@ -220,7 +263,7 @@ export default {
         let config = {
           username: this.username,
           password: this.password,
-          save:this.save
+          save: this.save,
         };
         let url = "/api/accounts/login/";
         this.axios
@@ -229,8 +272,8 @@ export default {
             console.log(response.data);
             if (response.data.login == true) {
               this.$store.commit("login");
-              this.$store.state.user=this.username;
-              this.$router.push({ name: "index" }); 
+              this.$store.state.user = this.username;
+              this.$router.push({ name: "index" });
             } else {
               this.error = true;
               this.error_msg = "Login Failed Username Or Password Error";
@@ -267,6 +310,7 @@ export default {
           console.log(response.data);
           if (response.data.send) {
             this.error_email = false;
+            this.card_change = false;
           } else {
             this.error_email = true;
             this.error_email_msg = "Have Send To Your Email or unvaild Email";
@@ -274,15 +318,43 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    Authorize(){
+       let config = {
+        email: this.email,
+        captcha:this.captcha,
+      };
+      let url = "/api/accounts/forget/";//TODO: update password
+      this.axios
+        .post(url, config)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.send) {
+            this.error_code = false;
+          } else {
+            this.error_code = true;
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   },
 };
 </script>
 <style scoped>
-.v-alert {
+.v-alert .error {
   width: 70%;
 }
 h2.h2 {
   margin-bottom: 15px;
+}
+.forget_card {
+  /* position: absolute; */
+  padding: 20px;
+}
+.forget_card1{
+z-index: 1;
+}
+.forget_card2{
+z-index: 2;
 }
 @media screen and (min-width: 960px) {
   .v-container {
