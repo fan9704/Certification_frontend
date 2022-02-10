@@ -1,19 +1,24 @@
 <template>
-  <v-container fluid>
+  <v-container>
+    <h2>Photo Converter</h2>
     <v-file-input
       accept="image/*"
-      label="File input!"
+      label="Photo input!"
       filled
       prepend-icon="mdi-camera"
       @change="previewImg($event)"
       v-model="file"
     ></v-file-input>
+   
     <v-btn rounded="lg" color="error" @click="this.file = null">
-      Reset File
+      Reset Photo
     </v-btn>
-    <v-btn rounded="lg" color="primary" @click="conRev"> Send file </v-btn>
+    <v-btn rounded="lg" color="primary" @click="conRev"> Send Photo </v-btn>
+     <h4>Preview Photo</h4>
+    <v-img v-bind:src="img"></v-img>
+    <v-btn rounded="lg" color="success" @click="Download">Download Photo </v-btn>
   </v-container>
-</template>]<script>
+</template><script>
 export default {
   data() {
     return {
@@ -28,7 +33,7 @@ export default {
       var that = this;
       // 判斷瀏覽器是否支援 FileReader
       if (!e || !window.FileReader) {
-        alert("您的裝置不支援圖片預覽功能，如需該功能請升級您的裝置！");
+        alert("您的裝置不支援圖片預覽功能，如需該功能請升級您的裝置!");
         return;
       }
       let reader = new FileReader();
@@ -54,11 +59,26 @@ export default {
         headers: { "Content-Type": "multipart/form-data" },
       };
       // 傳送請求
-
-      this.$http.post("/api/file/", form, config).then((response) => {
-       console.log(response.data)
-      })
+      this.$http
+        .post("/api/file/", form, config)
+        .then((response) => {
+          console.log(response.data);
+          document.cookie = "filename=" + response.data.filename;
+          console.log(document.cookie);
+          alert("Upload Success");
+        })
+        .catch((err) => console.log(err));
+    },
+    Download() {
+      this.$http.get("/api/file/")
+      .then((res)=>{console.log(res)})
       .catch((err)=>console.log(err))
+
+    },
+    getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(";").shift();
     },
   },
   name: "FileConverterView",

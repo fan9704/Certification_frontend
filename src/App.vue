@@ -36,10 +36,15 @@
               to="/certification/list"
             >
             </v-list-item>
-               <v-list-item
+            <v-list-item
               prepend-icon="mdi-file-replace"
               title="File Converter"
               to="/file"
+            ></v-list-item>
+            <v-list-item
+              prepend-icon="mdi-graph"
+              title="Graph"
+              to="/graph"
             ></v-list-item>
             <v-list-item
               v-if="!logincheck"
@@ -192,7 +197,7 @@ export default {
         console.log(res.data);
         if (res.data.User != null && res.data.User != undefined) {
           this.username = res.data.User;
-          this.$store.state.user=res.data.User;
+          this.$store.state.user = res.data.User;
           this.$store.commit("login");
         }
       })
