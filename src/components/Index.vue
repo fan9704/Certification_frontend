@@ -5,7 +5,7 @@
       <v-row>
         <v-col cols="6">
           <v-hover v-slot="{ hover, props }" open-delay="300">
-            <v-card>
+            <v-card data-aos="zoom-in">
               <v-img
                 :class="{ 'on-hover': hover }"
                 src="../assets/MTA.png"
@@ -37,7 +37,7 @@
 
         <v-col cols="6">
           <v-hover v-slot="{ hover, props }" open-delay="300">
-            <v-card>
+            <v-card data-aos="zoom-in">
               <v-img
                 :class="{ 'on-hover': hover }"
                 src="../assets/CCNA.png"
@@ -69,7 +69,7 @@
 
         <v-col cols="6">
           <v-hover v-slot="{ hover, props }" open-delay="300">
-            <v-card>
+            <v-card data-aos="zoom-in">
               <v-img
                 :class="{ 'on-hover': hover }"
                 src="../assets/TOEIC.jpg"
@@ -101,7 +101,7 @@
 
         <v-col cols="6">
           <v-hover v-slot="{ hover, props }" open-delay="300">
-            <v-card>
+            <v-card data-aos="zoom-in">
               <v-img
                 :class="{ 'on-hover': hover }"
                 src="../assets/TQC.png"

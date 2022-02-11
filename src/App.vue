@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app >
     <v-layout style="overflow: hidden">
       <v-app-bar absolute color="deep-purple">
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>

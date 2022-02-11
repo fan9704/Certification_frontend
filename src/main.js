@@ -8,6 +8,8 @@ import { loadFonts } from "./plugins/webfontloader";
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import auth from './module/auth.js'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 loadFonts();
 const store = createStore({
     modules: {
@@ -48,4 +50,5 @@ app.use(router);
 app.use(vuetify);
 app.use(VueAxios, axios);
 app.use(loadFonts);
+app.use(AOS.init());
 app.mount("#app");
