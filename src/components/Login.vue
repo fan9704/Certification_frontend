@@ -138,7 +138,7 @@
       <v-container v-show="!isShow">
         <h2 class="h2">Register Account</h2>
         <v-row>
-          <v-col cols="12" md="8">
+          <v-col cols="12" xs="12" sm="12" md="6">
             <v-text-field
               v-model="username"
               :rules="nameRules"
@@ -147,9 +147,9 @@
               required
             ></v-text-field>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="8">
+        <!-- </v-row>
+        <v-row> -->
+          <v-col cols="12" xs="12" sm="12" md="6">
             <v-text-field
               v-model="password"
               :rules="passwordRules"
@@ -160,7 +160,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="8">
+          <v-col cols="12" xs="12" sm="12" md="6">
             <v-text-field
               v-model="first_name"
               :rules="nameRules"
@@ -169,9 +169,9 @@
               required
             ></v-text-field>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="8">
+        <!-- </v-row>
+        <v-row> -->
+          <v-col cols="12" xs="12" sm="12" md="6">
             <v-text-field
               v-model="last_name"
               :rules="nameRules"
@@ -182,7 +182,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="8">
+          <v-col cols="12" xs="12" sm="12" md="6">
             <v-text-field
               v-model="email"
               :rules="emailRules"
@@ -190,13 +190,15 @@
               required
             ></v-text-field>
           </v-col>
-        </v-row>
-        <v-checkbox
+             <v-checkbox
+             cols="12" xs="12" sm="12" md="6"
           v-model="checkbox"
           :rules="[(v) => !!v || 'You must agree to continue!']"
-          label="Do you agree?"
+          label="Do you agree our policy?"
           required
         ></v-checkbox>
+        </v-row>
+     
 
         <v-btn color="warning" class="mr-4" v-on:click="slidetoggle"
           >Go to Login</v-btn
@@ -340,6 +342,7 @@ export default {
 };
 </script>
 <style scoped>
+
 .v-alert .error {
   width: 70%;
 }
@@ -361,6 +364,11 @@ z-index: 2;
     left: 10%;
     right: 10%;
     position: relative;
+  }
+}
+@media screen and (max-width: 960px) {
+  .v-form{
+    margin-bottom: 200px;
   }
 }
 .v-form {

@@ -156,12 +156,13 @@ export default {
     },
     logout() {
       this.axios
-        .get("/api/accounts/login")
+        .get("/api/accounts/login/")
         .then((response) => {
           console.log(response);
           this.$store.commit("logout");
           alert("Logout Success");
-          window.location.href = "/";
+          this.logoutform=false;
+          this.$router.push({ name: "index" });
         })
         .catch((error) => {
           console.log(error);
