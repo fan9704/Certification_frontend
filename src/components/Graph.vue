@@ -1,25 +1,57 @@
 <template>
-  <div style="width: 400px">
+  <v-container>
+    <!-- RWD -->
+    <h2 class="h2">Vue-Chart-3 Testing</h2>
+    <v-row class="mb-6" no-gutters>
+      <v-col cols="6" sm="12" md="6"> <DoughnutChart v-bind="doughnutChartProps" /></v-col>
+      <v-col cols="6" sm="12" md="6"> <BarChart v-bind="doughnutChartProps" /></v-col>
+    </v-row>
+    <v-row class="mb-6" no-gutters>
+      <v-col cols="6" sm="12" md="6"><LineChart v-bind="doughnutChartProps" /></v-col>
+      <v-col cols="6" sm="12" md="6"><RadarChart v-bind="doughnutChartProps" /></v-col>
+    </v-row>
+
     <div style="display: flex; justify-content: center">
-      <button class="button" type="button" @click="shuffleData">Shuffle</button>
-      <button class="button" type="button" @click="switchLegend">Swicth legends</button>
+      <v-btn class="button" color="warning" @click="shuffleData">Shuffle</v-btn>
+      <v-btn class="button" color="warning" @click="switchLegend"
+        >Swicth legends</v-btn
+      >
+      <v-btn class="button" color="warning" @click="AddDataSet"
+        >Add DataSet</v-btn
+      >
+      <v-btn class="button" color="warning" @click="RemoveDataSet"
+        >Remove DataSet</v-btn
+      >
     </div>
-    <DoughnutChart v-bind="doughnutChartProps" />
-  </div>
+  </v-container>
 </template>
 
 
 <script>
 import { computed, ref } from "vue";
 import { shuffle } from "lodash";
-import { DoughnutChart, useDoughnutChart } from "vue-chart-3";
+import {
+  DoughnutChart,
+  useDoughnutChart,
+  BarChart,
+  useBarChart,
+  LineChart,
+  useLineChart,
+  RadarChart,
+  useRadarChart,
+} from "vue-chart-3";
 import { Chart, registerables } from "chart.js"; //, ChartData, ChartOptions
 
 Chart.register(...registerables);
 
 export default {
+  data() {
+    return {
+      values: [],
+    };
+  },
   name: "GraphView",
-  components: { DoughnutChart },
+  components: { DoughnutChart, BarChart, LineChart, RadarChart },
   setup() {
     const dataValues = ref([30, 40, 60, 70, 5]);
     const toggleLegend = ref(true);
@@ -64,6 +96,18 @@ export default {
       options,
     });
 
+    const { BarChartProps, BarChartRef } = useBarChart({
+      chartData: testData,
+      options,
+    });
+    const { LineChartProps, LineChartRef } = useLineChart({
+      chartData: testData,
+      options,
+    });
+    const { RadarChartProps, RadarChartRef } = useRadarChart({
+      chartData: testData,
+      options,
+    });
     function shuffleData() {
       dataValues.value = shuffle(dataValues.value);
       console.log(doughnutChartRef.value.chartInstance);
@@ -72,7 +116,16 @@ export default {
     function switchLegend() {
       toggleLegend.value = !toggleLegend.value;
     }
-
+    function AddDataSet() {
+      console.log(dataValues.value);
+      dataValues.value = dataValues.value.push(Math.random() * 100);
+      console.log(dataValues.value);
+    }
+    function RemoveDataSet() {
+      console.log(dataValues.value);
+      dataValues.value = dataValues.value.pop();
+      console.log(dataValues.value);
+    }
     return {
       shuffleData,
       switchLegend,
@@ -80,6 +133,14 @@ export default {
       options,
       doughnutChartRef,
       doughnutChartProps,
+      AddDataSet,
+      RemoveDataSet,
+      BarChartProps,
+      BarChartRef,
+      LineChartProps,
+      LineChartRef,
+      RadarChartProps,
+      RadarChartRef,
     };
   },
 };
@@ -87,15 +148,10 @@ export default {
 
 <style>
 button.button {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color:white;
   padding: 10px;
-  background: black;
-  border-radius:5px;
-  margin-top: 60px;
+  border-radius: 5px;
+  margin: 5px;
 }
 </style>
 
