@@ -3,7 +3,7 @@
     <h2>Chatroom!</h2>
     <v-row :key="index" v-for="(msg, index) in msgs">
       <v-col fluid>
-        <v-btn rounded="pill" color="primary">
+        <v-btn rounded="pill" color="primary" data-aos="zoom-in-right">
           {{ msg.message }}
         </v-btn></v-col
       >

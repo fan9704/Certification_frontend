@@ -1,9 +1,21 @@
 <template>
   <v-container>
+    <v-dialog v-model="progress" activator="parent">
+      <v-card class="d-flex justify-center mb-6 progress">
+        <v-card-text> Waiting for data </v-card-text>
+        <v-progress-circular
+          :size="70"
+          :width="10"
+          color="purple"
+          indeterminate
+        ></v-progress-circular>
+      </v-card>
+    </v-dialog>
+
     <h2>Certification List</h2>
     <v-row>
       <v-col cols="12" class="d-flex">
-        <!-- <v-select :items="option" label="Option" outlined /> -->
+        <v-select :items="option" label="Option" outlined />
         <select
           name="type"
           id="type"
@@ -19,11 +31,13 @@
     </v-row>
     <v-row>
       <v-col cols="2">ID</v-col>
-      <v-col cols="10" sm="4"> Certification Name </v-col> </v-row
-    >
+      <v-col cols="10" sm="4"> Certification Name </v-col>
+    </v-row>
     <v-row :key="index" v-for="(cert, index) in certs">
-      <v-col cols="2">{{ index + 1 + (page - 1) * select_option }}</v-col>
-      <v-col cols="10" sm="4">
+      <v-col cols="2" data-aos="flip-right">{{
+        index + 1 + (page - 1) * select_option
+      }}</v-col>
+      <v-col cols="10" sm="4" data-aos="flip-right">
         {{ cert.name }}
       </v-col>
     </v-row>
@@ -49,6 +63,7 @@ export default {
       select_option: 20,
       datanumber: 100,
       page: 1,
+      progress: true,
     };
   },
   methods: {
@@ -72,6 +87,8 @@ export default {
       .then((res) => {
         this.datanumber = res.data.length;
         this.certs = res.data.splice(0, 0 + this.select_option);
+        setTimeout(()=>{ this.progress = false; }, 1000);
+        
       })
       .catch((error) => console.log(error));
   },
@@ -85,5 +102,8 @@ select {
 }
 option {
   background: #fff;
+}
+.progress {
+  padding: 20px;
 }
 </style>

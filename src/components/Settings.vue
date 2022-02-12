@@ -8,7 +8,7 @@
       Edit Your Profile Success
     </v-alert>
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" data-aos="fade-right">
         <v-text-field
           v-model="username"
           :rules="nameRules"
@@ -20,7 +20,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" data-aos="fade-right">
         <v-text-field
           v-model="email"
           :rules="emailRules"
@@ -32,7 +32,7 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" data-aos="fade-right">
         <v-text-field
           v-model="first_name"
           :rules="nameRules"
@@ -43,7 +43,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" data-aos="fade-right">
         <v-text-field
           v-model="last_name"
           :rules="nameRules"
@@ -54,7 +54,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" data-aos="fade-right">
         <v-text-field
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           v-model="password"
@@ -69,7 +69,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" data-aos="fade-right">
         <v-text-field
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           v-model="confirm_password"
@@ -83,7 +83,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-checkbox
+    <v-checkbox  data-aos="fade-right"
       v-model="checkbox"
       :rules="[(v) => !!v || 'You must agree to continue!']"
       label="Remeber Me?"
