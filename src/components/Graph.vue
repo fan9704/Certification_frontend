@@ -3,12 +3,20 @@
     <!-- RWD -->
     <h2 class="h2">Vue-Chart-3 Testing</h2>
     <v-row class="mb-6" no-gutters>
-      <v-col cols="6" sm="12" md="6"> <DoughnutChart v-bind="doughnutChartProps" /></v-col>
-      <v-col cols="6" sm="12" md="6"> <BarChart v-bind="doughnutChartProps" /></v-col>
+      <v-col cols="6" sm="12" md="6">
+        <DoughnutChart v-bind="doughnutChartProps"
+      /></v-col>
+      <v-col cols="6" sm="12" md="6">
+        <BarChart v-bind="barChartProps"
+      /></v-col>
     </v-row>
     <v-row class="mb-6" no-gutters>
-      <v-col cols="6" sm="12" md="6"><LineChart v-bind="doughnutChartProps" /></v-col>
-      <v-col cols="6" sm="12" md="6"><RadarChart v-bind="doughnutChartProps" /></v-col>
+      <v-col cols="6" sm="12" md="6"
+        ><LineChart v-bind="lineChartProps"
+      /></v-col>
+      <v-col cols="6" sm="12" md="6"
+        ><RadarChart v-bind="radarChartProps"
+      /></v-col>
     </v-row>
 
     <div style="display: flex; justify-content: center">
@@ -54,10 +62,11 @@ export default {
   components: { DoughnutChart, BarChart, LineChart, RadarChart },
   setup() {
     const dataValues = ref([30, 40, 60, 70, 5]);
+    const datalabel = ref(["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"]);
     const toggleLegend = ref(true);
     const testData = computed(() => ({
       //<ChartData<"doughnut">>
-      labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+      labels: datalabel.value,
       datasets: [
         {
           data: dataValues.value,
@@ -71,9 +80,25 @@ export default {
         },
       ],
     }));
-
+    let delayed;
     const options = computed(() => ({
       //<ChartOptions<"doughnut">>
+      animation: {
+        onComplete: () => {
+          delayed = true;
+        },
+        delay: (context) => {
+          let delay = 0;
+          if (
+            context.type === "data" &&
+            context.mode === "default" &&
+            !delayed
+          ) {
+            delay = context.dataIndex * 300 + context.datasetIndex * 100;
+          }
+          return delay;
+        },
+      },
       scales: {
         myScale: {
           type: "logarithmic",
@@ -96,15 +121,15 @@ export default {
       options,
     });
 
-    const { BarChartProps, BarChartRef } = useBarChart({
+    const { barChartProps, barChartRef } = useBarChart({
       chartData: testData,
       options,
     });
-    const { LineChartProps, LineChartRef } = useLineChart({
+    const { lineChartProps, lineChartRef } = useLineChart({
       chartData: testData,
       options,
     });
-    const { RadarChartProps, RadarChartRef } = useRadarChart({
+    const { radarChartProps, radarChartRef } = useRadarChart({
       chartData: testData,
       options,
     });
@@ -135,12 +160,12 @@ export default {
       doughnutChartProps,
       AddDataSet,
       RemoveDataSet,
-      BarChartProps,
-      BarChartRef,
-      LineChartProps,
-      LineChartRef,
-      RadarChartProps,
-      RadarChartRef,
+      barChartProps,
+      barChartRef,
+      lineChartProps,
+      lineChartRef,
+      radarChartProps,
+      radarChartRef,
     };
   },
 };
